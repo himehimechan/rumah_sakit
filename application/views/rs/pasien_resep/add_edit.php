@@ -67,10 +67,17 @@
                   <hr/>
                 </div>
                 <div class="x_title">
-                  <h2>OBAT PASIEN</h2>
+                  <h2>RESEP OBAT PASIEN <label style="color:blue;"><b><?php if($cek_copy_only) {?> COPY ONLY <?php } ?></label></b></h2>
                   <div class="clearfix"></div>
                 </div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-plus-square"></i> Tambah Obat</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-plus-square"></i> Tambah Obat</button><br/>
+                <?php 
+                if($cek_copy_only) { ?>
+                  <a href="<?=base_url()?>pasienresep/update_status_resep/<?=$data_pasien[0]['id_data_pemeriksaan']?>?status=no copy only" class="btn btn-info btn-sm" title="unset copy only resep">Unset Copy Only Resep</a> 
+                <?php } else { ?>
+                  <a href="<?=base_url()?>pasienresep/update_status_resep/<?=$data_pasien[0]['id_data_pemeriksaan']?>?status=copy only" class="btn btn-info btn-sm" title="set copy only resep">Set Copy Only Resep</a>
+                <?php }
+                ?>
                 <div class="x_content">
                   <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
@@ -81,13 +88,20 @@
                           <th>QTY</th>
                           <th>Harga</th>
                           <th>Total Harga</th>
+                          <th>Action</th>
                       </tr>
                       </thead>
                       <tbody>
                           <?php 
                               $no = 1;
                               $tot_all = 0;
+                              $status_resep = 'COMPLETE';
+                              $qty_obat = 0;
                               foreach($data_obat as $row) {
+                                if($row['status'] != 'ready') {
+                                  $status_resep = 'INCOMPLETE';
+                                }
+                                $qty_obat += $row['qty'];
                                 $tot_all += $row['harga']*$row['qty'];
                                   ?>
                                   <tr>
@@ -97,6 +111,12 @@
                                       <td style="text-align:right"><?php echo number_format($row['qty']);?></td>
                                       <td style="text-align:right">Rp. <?php echo number_format($row['harga']);?></td>
                                       <td style="text-align:right">Rp. <?php echo number_format(($row['harga']*$row['qty']));?></td>
+                                      <td style="text-align:center"><a href="javascript:(0)" 
+                                                    class="btn btn-info btn-sm" title="edit" data-toggle="modal" data-target=".bs-example-modal-lg" 
+                                                    onclick="edit_obat('<?=$row['id']?>', '<?=$row['kode_barang']?>', '<?=$row['nama_obat']?>', '<?=$row['qty']?>', '<?=$row['status']?>')"><i class="fa fa-pencil"></i></a> 
+                                                    <a href="<?=base_url()?>pasienresep/delete_obat/<?=$row['id'];?>/<?=$data_pasien[0]['id_data_pemeriksaan']?>" 
+                                                    onclick="return confirm('Are you sure to delete data?')" 
+                                                    class="btn btn-danger btn-sm" title="delete"><i class="fa fa-trash"></i></a></td>
                                   </tr>
                                   <?php
                           $no++;    
@@ -104,8 +124,12 @@
                           ?>
                       </tbody>
                       <tfoot>
-                        <td colspan="5"><b>Total</b></td>
+                        <td colspan="2" style="text-align:center"><b>Total</b></td>
+                        <td><b><?=$status_resep?></b></td>
+                        <td style="text-align:right"><b><?=$qty_obat?></b></td>
+                        <td><b></b></td>
                         <td style="text-align:right"><b>Rp. <?=number_format($tot_all)?></b></td>
+                        <td></td>
                       </tfoot>
                   </table>
                   <div class="ln_solid"></div>
@@ -133,19 +157,20 @@
                     <div class="col-md-9 col-sm-9 ">
                       <input type="text" class="form-control" placeholder="Nama Obat" name="obat" required onkeyup="cekobat()" id="obat">
                       <input type="hidden" id="id_obat" name="id_obat" >
+                      <input type="hidden" id="id_pemberian_obat" name="id_pemberian_obat" value='' >
                       <div class="obat-result" id="obat-result"></div>
                     </div>
                   </div>
                   <div class="form-group row ">
                     <label class="control-label col-md-3 col-sm-3 ">QTY</label>
                     <div class="col-md-9 col-sm-9 ">
-                      <input type="number" class="form-control" placeholder="QTY" name="qty" required>
+                      <input type="number" class="form-control" id="qty" placeholder="QTY" name="qty" required>
                     </div>
                   </div>
                   <div class="form-group row ">
                     <label class="control-label col-md-3 col-sm-3 ">Status</label>
                     <div class="col-md-9 col-sm-9 ">
-                      <select class="form-control" name="status">
+                      <select class="form-control" name="status" id="status">
                         <option value="ready">Ready</option>
                         <option value="not ready">Not Ready</option>
                       </select>
@@ -162,6 +187,15 @@
         </div>
 
         <script>
+
+          function edit_obat(id, id_obat, nama, qty, status){
+            $("#obat").val(nama);
+            $("#id_pemberian_obat").val(id);
+            $("#id_obat").val(id_obat);
+            $("#qty").val(qty);
+            $("#status").val(status);
+          }
+
           function cekobat() {
             var search = $("#obat").val();
             // console.log(obat);

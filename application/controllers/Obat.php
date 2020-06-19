@@ -36,9 +36,13 @@ class Obat extends CI_Controller{
   public function add_edit_save($id=''){
 
     $name = $this->input->post('nama');
+    $kategori = $this->input->post('kategori');
+    $satuan = $this->input->post('satuan');
     $harga = $this->input->post('harga');
 
     $this->form_validation->set_rules('nama', 'Nama', 'required');
+    $this->form_validation->set_rules('kategori', 'Kategori', 'required');
+    $this->form_validation->set_rules('satuan', 'Satuan', 'required');
     $this->form_validation->set_rules('harga', 'Harga ', 'required|min_length[1]');
       
     if($this->form_validation->run() == FALSE) {
@@ -55,13 +59,17 @@ class Obat extends CI_Controller{
       if($id == '') {
           $data = array(
               'nama_obat'   => $name,
-              'harga' => $harga
+              'harga' => $harga,
+              'kategori_obat' => $kategori,
+              'satuan_barang' => $satuan
           );
           $add = $this->MObat->add_obat($data);
       } else {
         $data = array(
           'nama_obat'   => $name,
-          'harga' => $harga
+          'harga' => $harga,
+          'kategori_obat' => $kategori,
+          'satuan_barang' => $satuan
         );
         $edit = $this->MObat->edit_obat($data, $id);
       }

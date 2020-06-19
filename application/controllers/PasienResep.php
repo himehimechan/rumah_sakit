@@ -22,9 +22,24 @@ class PasienResep extends CI_Controller{
   public function detil_pasien($id_pemeriksaan){
     $data['data_pasien'] = $this->MPemeriksaan->get_data_detail($id_pemeriksaan);
     $data['data_obat'] = $this->MPemeriksaan->get_data_obat($id_pemeriksaan);
+    $data['cek_copy_only'] = $this->MPemeriksaan->cek_copy_only($id_pemeriksaan);
 
     $this->template->load('template_admin_rs','rs/pasien_resep/add_edit',$data);
   }
+
+  public function update_status_resep($id_pemeriksaan) {
+    $status = $this->input->get("status");
+    $this->MPemeriksaan->edit_status_resep($id_pemeriksaan, $status);
+    redirect("PasienResep/detil_pasien/".$id_pemeriksaan);
+  }
+
+  public function delete_obat($id, $id_pemeriksaan) {
+    $this->db->where('id', $id);
+
+    $this->db->delete('tbl_riwayat_pemberian_obat');
+    
+    redirect("pasienresep/detil_pasien/".$id_pemeriksaan);
+  } 
 
   public function getobat(){
     $search = $this->input->get("search");
@@ -34,14 +49,25 @@ class PasienResep extends CI_Controller{
   }
 
   public function add_obat($id_pemeriksaan){
-    $data_insert = array(
-      "id_data_pemeriksaan" => $id_pemeriksaan,
-      "kode_barang"         => $this->input->post("id_obat"),
-      "qty"                 => $this->input->post("qty"),
-      "status"              => $this->input->post("status"),
-      "tanggal"             => date("Y-m-d H:i:s")
-    );
-    $this->MPemeriksaan->tambah_obat($data_insert);
+    $id_pemberian_obat = $this->input->post("id_pemberian_obat");
+    if($id_pemberian_obat == '') {
+      $data_insert = array(
+        "id_data_pemeriksaan" => $id_pemeriksaan,
+        "kode_barang"         => $this->input->post("id_obat"),
+        "qty"                 => $this->input->post("qty"),
+        "status"              => $this->input->post("status"),
+        "tanggal"             => date("Y-m-d H:i:s")
+      );
+      $this->MPemeriksaan->tambah_obat($data_insert, $id_pemeriksaan);
+    } else {
+      $data = array(
+        "id_data_pemeriksaan" => $id_pemeriksaan,
+        "kode_barang"         => $this->input->post("id_obat"),
+        "qty"                 => $this->input->post("qty"),
+        "status"              => $this->input->post("status")
+      );
+      $this->MPemeriksaan->edit_obat($data, $id_pemberian_obat, $id_pemeriksaan);
+    }
     redirect("PasienResep/detil_pasien/".$id_pemeriksaan);
   }
 
