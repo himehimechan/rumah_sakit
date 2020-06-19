@@ -5,6 +5,7 @@ class PasienResep extends CI_Controller{
 		parent::__construct();
 		$this->load->model('MPemeriksaan');
     $this->load->helper('url');
+    $this->load->library('pdf'); 
     
     if ($this->session->userdata('logged_in')=="") {
 			redirect('auth');
@@ -17,6 +18,20 @@ class PasienResep extends CI_Controller{
     $data['data_pasien'] = $this->MPemeriksaan->get_data();
 		$this->template->load('template_admin_rs','rs/pasien_resep/index',$data);
 
+  }
+
+  public function report($id_pemeriksaan){
+
+    $data['data_pasien'] = $this->MPemeriksaan->get_data_detail($id_pemeriksaan);
+    $data_pasien = $this->MPemeriksaan->get_data_detail($id_pemeriksaan);
+    $data['data_obat'] = $this->MPemeriksaan->get_data_obat($id_pemeriksaan);
+    $data['cek_copy_only'] = $this->MPemeriksaan->cek_copy_only($id_pemeriksaan);
+    $mpdf = new \Mpdf\Mpdf();
+		$data = $this->load->view('rs/pasien_resep/report', $data, TRUE);
+    $mpdf->WriteHTML($data);
+    $mpdf->SetTitle('Laporan Resep Obat Pasien');
+    $output = 'Laporan Resep Obat Pasien'.$data_pasien[0]['nama_pasien'].'.pdf';
+		$mpdf->Output("$output", 'I');
   }
 
   public function detil_pasien($id_pemeriksaan){

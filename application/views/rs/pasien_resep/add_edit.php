@@ -10,7 +10,7 @@
                 <div class="x_title">
                   <h2>BIODATA PASIEN</h2> 
                   <div class="clearfix"></div>
-                  <a href="<?=base_url()?>pasienresep/report" class="btn btn-primary"><i class="fa fa-download"></i> Download Report</a>
+                  <a href="<?=base_url()?>pasienresep/report/<?=$data_pasien[0]['id_data_pemeriksaan']?>" class="btn btn-primary"><i class="fa fa-download"></i> Download Report</a>
                 </div>
                 <div class="x_content">
                   <table class="table table-striped table-bordered" style="width:100%">
@@ -100,9 +100,15 @@
                               foreach($data_obat as $row) {
                                 if($row['status'] != 'ready') {
                                   $status_resep = 'INCOMPLETE';
+                                  $total = 0;
+                                  $tot_all += 0;
+                                } else {
+                                  $total = $row['harga']*$row['qty'];
+                                  $tot_all += $row['harga']*$row['qty'];
                                 }
+
                                 $qty_obat += $row['qty'];
-                                $tot_all += $row['harga']*$row['qty'];
+                                
                                   ?>
                                   <tr>
                                       <td><?php echo $no; ?></td>
@@ -110,7 +116,7 @@
                                       <td><?php echo strtoupper($row['status']);?></td>
                                       <td style="text-align:right"><?php echo number_format($row['qty']);?></td>
                                       <td style="text-align:right">Rp. <?php echo number_format($row['harga']);?></td>
-                                      <td style="text-align:right">Rp. <?php echo number_format(($row['harga']*$row['qty']));?></td>
+                                      <td style="text-align:right">Rp. <?php echo number_format($total);?></td>
                                       <td style="text-align:center"><a href="javascript:(0)" 
                                                     class="btn btn-info btn-sm" title="edit" data-toggle="modal" data-target=".bs-example-modal-lg" 
                                                     onclick="edit_obat('<?=$row['id']?>', '<?=$row['kode_barang']?>', '<?=$row['nama_obat']?>', '<?=$row['qty']?>', '<?=$row['status']?>')"><i class="fa fa-pencil"></i></a> 
