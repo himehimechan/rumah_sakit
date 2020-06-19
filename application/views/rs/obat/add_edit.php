@@ -51,10 +51,10 @@
                         <div class="col-md-9 col-sm-9 ">
                         <select class="form-control" name="satuan" required>
                           <option value="" disabled selected>--pilih satuan obat--</option>
-                          <option value="Tablet" <?php if($obat) { if($obat[0]->kategori_obat == 'Tablet') { echo "selected"; } }?>>Tablet</option>
-                          <option value="Sirup" <?php if($obat) { if($obat[0]->kategori_obat == 'Sirup') { echo "selected"; } }?>>Sirup</option>
-                          <option value="Bubuk" <?php if($obat) { if($obat[0]->kategori_obat == 'Bubuk') { echo "selected"; } }?>>Bubuk</option>
-                          <option value="Kapsul" <?php if($obat) { if($obat[0]->kategori_obat == 'Kapsul') { echo "selected"; } }?>>Kapsul</option>
+                          <option value="Tablet" <?php if($obat) { if($obat[0]->satuan_barang == 'Tablet') { echo "selected"; } }?>>Tablet</option>
+                          <option value="Sirup" <?php if($obat) { if($obat[0]->satuan_barang == 'Sirup') { echo "selected"; } }?>>Sirup</option>
+                          <option value="Bubuk" <?php if($obat) { if($obat[0]->satuan_barang == 'Bubuk') { echo "selected"; } }?>>Bubuk</option>
+                          <option value="Kapsul" <?php if($obat) { if($obat[0]->satuan_barang == 'Kapsul') { echo "selected"; } }?>>Kapsul</option>
                         </select>
                         </div>
                       </div>
