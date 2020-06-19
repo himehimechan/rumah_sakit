@@ -33,8 +33,26 @@ class MPemeriksaan extends CI_Model{
         return $query->result_array();
     }
 
-    function tambah_obat($data){
+    function tambah_obat($data, $id_pemeriksaan){
         $this->db->insert("tbl_riwayat_pemberian_obat", $data);
+    }
+
+    function edit_obat($data, $id, $id_pemeriksaan){
+        $this->db->where("id", $id);
+        $this->db->update("tbl_riwayat_pemberian_obat", $data);
+    }
+
+    function edit_status_resep($id_pemeriksaan, $status) {
+        $data = array(
+            "status_resep"=>$status
+        );
+        $this->db->where("id_data_pemeriksaan", $id_pemeriksaan);
+        $this->db->update("tbl_riwayat_pemberian_obat", $data);
+    }
+
+    function cek_copy_only($id_pemeriksaan) {
+        $cek = $this->db->query("select * from tbl_riwayat_pemberian_obat where id_data_pemeriksaan = '$id_pemeriksaan' and status_resep = 'copy only'");
+        return $cek->result_array();
     }
 
 }

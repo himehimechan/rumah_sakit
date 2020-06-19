@@ -35,6 +35,29 @@
                           value="<?php if($obat) { echo $obat[0]->harga; }?>" >
                         </div>
                       </div>
+                      <div class="form-group row ">
+                        <label class="control-label col-md-3 col-sm-3 ">Kategori Obat</label>
+                        <div class="col-md-9 col-sm-9 ">
+                          <select class="form-control" name="kategori" required>
+                            <option value="" disabled selected>--pilih kategori obat--</option>
+                            <option value="Obat Penenang" <?php if($obat) { if($obat[0]->kategori_obat == 'Obat Penenang') { echo "selected"; } }?>>Obat Penenang</option>
+                            <option value="Obat Vitamin" <?php if($obat) { if($obat[0]->kategori_obat == 'Obat Vitamin') { echo "selected"; } }?>>Obat Vitamin</option>
+                            <option value="Obat Antibiotik" <?php if($obat) { if($obat[0]->kategori_obat == 'Obat Antibiotik') { echo "selected"; } }?>>Obat Antibiotik</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row ">
+                        <label class="control-label col-md-3 col-sm-3 ">Satuan Obat</label>
+                        <div class="col-md-9 col-sm-9 ">
+                        <select class="form-control" name="satuan" required>
+                          <option value="" disabled selected>--pilih satuan obat--</option>
+                          <option value="Tablet" <?php if($obat) { if($obat[0]->kategori_obat == 'Tablet') { echo "selected"; } }?>>Tablet</option>
+                          <option value="Sirup" <?php if($obat) { if($obat[0]->kategori_obat == 'Sirup') { echo "selected"; } }?>>Sirup</option>
+                          <option value="Bubuk" <?php if($obat) { if($obat[0]->kategori_obat == 'Bubuk') { echo "selected"; } }?>>Bubuk</option>
+                          <option value="Kapsul" <?php if($obat) { if($obat[0]->kategori_obat == 'Kapsul') { echo "selected"; } }?>>Kapsul</option>
+                        </select>
+                        </div>
+                      </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-9 col-sm-9  offset-md-3">

@@ -22,6 +22,8 @@
                                     <tr>
                                         <th width="12">No</th>
                                         <th>Nama Obat</th>
+                                        <th>Kategori</th>
+                                        <th>Satuan</th>
                                         <th>Harga Obat</th>
                                         <th width="90">Aksi</th>
                                     </tr>
@@ -34,6 +36,8 @@
                                                 <tr>
                                                     <td><?=$no?></td>
                                                     <td><?php echo $row['nama_obat'];?></td>
+                                                    <td><?php echo $row['kategori_obat'];?></td>
+                                                    <td><?php echo $row['satuan_barang'];?></td>
                                                     <td><?php echo $row['harga'];?></td>
                                                     <td><a href="<?php echo base_url()?>obat/add_edit/<?php echo $row['id']; ?>" 
                                                     class="btn btn-info btn-sm" title="edit"><i class="fa fa-pencil"></i></a> 
