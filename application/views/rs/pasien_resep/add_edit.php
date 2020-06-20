@@ -93,11 +93,12 @@
                       </thead>
                       <tbody>
                           <?php 
-                              $no = 1;
+                              $no = 0;
                               $tot_all = 0;
                               $status_resep = 'COMPLETE';
                               $qty_obat = 0;
                               foreach($data_obat as $row) {
+                                $no++;
                                 if($row['status'] != 'ready') {
                                   $status_resep = 'INCOMPLETE';
                                   $total = 0;
@@ -125,7 +126,10 @@
                                                     class="btn btn-danger btn-sm" title="delete"><i class="fa fa-trash"></i></a></td>
                                   </tr>
                                   <?php
-                          $no++;    
+                              
+                          }
+                          if($no == 0) {
+                            $status_resep = '';
                           } 
                           ?>
                       </tbody>
