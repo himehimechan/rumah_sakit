@@ -130,7 +130,16 @@
                           }
                           if($no == 0) {
                             $status_resep = '';
+                          } else {
+                            if(!$cek_copy_only) {
+                              $data = array(
+                                "status_resep" => $status_resep
+                              );
+                              $this->db->where("id_data_pemeriksaan", $data_pasien[0]['id_data_pemeriksaan']);
+                              $this->db->update("tbl_riwayat_pemberian_obat", $data);
+                            }
                           } 
+                          
                           ?>
                       </tbody>
                       <tfoot>

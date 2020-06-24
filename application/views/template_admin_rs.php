@@ -103,6 +103,8 @@
                   </li>
                   <li class="<?php if($this->session->userdata('halaman') == 'pasienresep'){ echo 'active'; } ?>"><a href="<?=base_url()?>pasienresep"><i class="fa fa-user-md"></i> Resep Pasien</a>
                   </li>
+                  <li class="<?php if($this->session->userdata('halaman') == 'chartobat'){ echo 'active'; } ?>"><a href="<?=base_url()?>chartobat"><i class="fa fa-bar-chart"></i> Chart Obat Pasien</a>
+                  </li>
                 </ul>
               </div>
 
