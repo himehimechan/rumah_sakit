@@ -50,7 +50,7 @@ var IsidataResep = {
     label: 'Status Resep',     
     data: [ <?php foreach ($data_per_status_resep as $data) { echo $data->total . ", "; } ?> ],     
     backgroundColor: '#9ED4A9',     
-    borderColor: '##93C3D2',     
+    borderColor: '#93C3D2',     
     yAxisID: "y-axis-data1" };    
     var dataresep = {     
         labels: [ <?php foreach ($data_per_status_resep as $data) { echo "'" .strtoupper($data->status_resep) ."',"; } ?> ],     
@@ -63,12 +63,15 @@ var IsidataResep = {
                     type: 'bar',     data: dataresep,     options: chartOptions  }); 
 
 var dataCanvas = document.getElementById("pieChart1").getContext('2d');   
+var warna = [];
+<?php foreach ($data_obat_qty as $data) { ?>
+    warna.push(hexagenerate());<?php } ?>
 var Isidata = {    
     label: 'Obat',    
     data: [<?php foreach ($data_obat_qty as $data) { 
         echo $data->total_obat . ", "; } ?> ],    
-        backgroundColor: ["#99ffcc","#ff9999", "#ff3889"],    
-        borderColor: ["#99ffcc","#ff9999", "#ff3889"],        
+        backgroundColor: warna,    
+        borderColor: warna,        
         yAxisID: "y-axis-data1" };
 
 var dataobat = {  
@@ -82,5 +85,9 @@ var dataobat = {
                 data: dataobat,       
                 options: chartOptions     
                 });
+
+function hexagenerate(){
+    return "#" + Math.floor(Math.random()*16777215).toString(16);
+}
 
  </script>
